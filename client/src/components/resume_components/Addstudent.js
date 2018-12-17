@@ -29,7 +29,9 @@ class AddStudent extends Component{
        this.state = { name : '', email: '', phone: '', branch: ''}
     }
     addNewStudent = ()=>{
-        this.props.addStudent(this.state);
+        this.props.addStudent(this.state, ()=>{
+             console.log("dsdsdsdsdsdd");
+        });
     }
     render(){
          const {classes} = this.props;

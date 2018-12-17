@@ -5,3 +5,5 @@
 // export const CREATE_RESUME = "create-resume";
 
 export const ADD_STUDENT = "add_student";
+export const LIST_STUDENT = "list_student";
+export const TAKE_ATTENDANCE = "take-attendance";

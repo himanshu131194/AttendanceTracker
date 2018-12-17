@@ -16,8 +16,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import  MainListItems from './ListItems';
 import Addstudent from './resume_components/Addstudent';
-import TakeAttendance from './resume_components/TakeAttendance';
-import CheckAttendance from './resume_components/CheckAttendance';
+import TakeAttendance from './resume_components/Takeattendance';
+import CheckAttendance from './resume_components/Checkattendance';
 
 const drawerWidth = 270;
 

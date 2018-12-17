@@ -2,6 +2,9 @@ import mongoose from 'mongoose'
 import config from '../../config/config'
 
 const StudentSchema = new mongoose.Schema({
+      name:{
+         type: String
+      },
       email: {
         type: String,
         trim: true,

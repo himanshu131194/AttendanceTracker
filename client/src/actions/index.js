@@ -1,5 +1,5 @@
 //import {AUTH_USERS, AUTH_ERROR, CREATE_USERS, CREATE_RESUME, LOGOUT_USERS} from './types'
-import {ADD_STUDENT, AUTH_ERROR} from './types';
+import {ADD_STUDENT, LIST_STUDENT, TAKE_ATTENDANCE} from './types';
 import axios from 'axios'
 
 export const addStudent = ({email, phone, branch}, callback)=>{
@@ -15,7 +15,49 @@ export const addStudent = ({email, phone, branch}, callback)=>{
                 callback();
              }catch(error) {
                 dispatch({
-                    type: AUTH_ERROR,
+                    type: ADD_STUDENT,
+                    payload: error
+                })
+             }
+       }
+}
+
+
+export const listStudent = (callback)=>{
+       return async (dispatch)=>{
+             try {
+                const request = await axios.get('http://localhost:4000/api/list-students');
+                console.log(request);
+                dispatch({
+                      type: LIST_STUDENT,
+                      payload: request.data.data
+                });
+                callback();
+             }catch(error) {
+                dispatch({
+                    type: LIST_STUDENT,
+                    payload: error
+                })
+             }
+       }
+}
+
+export const takeAttendance = ({ids}, callback)=>{
+       const presenceList = [];
+       ids.map((id)=> presenceList.push({students_id: id, presence: true}));
+       return async (dispatch)=>{
+             try {
+                const request = await axios.post('http://localhost:4000/api/take-attendance', {
+                     presence: presenceList
+                });
+                dispatch({
+                      type: TAKE_ATTENDANCE,
+                      payload: request.data.data
+                });
+                callback();
+             }catch(error) {
+                dispatch({
+                    type: TAKE_ATTENDANCE,
                     payload: error
                 })
              }
