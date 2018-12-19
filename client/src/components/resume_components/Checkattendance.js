@@ -1,79 +1,84 @@
-import React, {Component, Fragment} from 'react';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Typography from '@material-ui/core/Typography';
+import React, {Fragment, Component} from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types'
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
-const styles = theme =>({
-      nextDetail: { display: 'flex',justifyContent: 'flex-end'},
-      fillInfoCard:{
-        width: "70%",
-        margin: "auto"
-      }
-})
+import {connect} from 'react-redux'
+import * as actions  from '../../actions'
 
-class Skills extends Component{
-    render(){
-         const {classes} = this.props;
-         return(
-            <Fragment>
-                <Card className={classes.fillInfoCard}>
-                  <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                     Take Attendance
-                  </Typography>
-                  <Grid container spacing={24}>
-                      <Grid item xs={12} sm={6}>
-                        <TextField required id="firstName" name="firstName" label="First name"
-                        fullWidth autoComplete="fname"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField required id="lastName" name="lastName" label="Last name"
-                          fullWidth autoComplete="lname"
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField required id="email" name="email" label="Email"
-                          fullWidth autoComplete="email"
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField required id="phone" name="phone" label="phone"
-                          fullWidth autoComplete="phone"
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField required id="address" name="address" label="address"
-                          fullWidth autoComplete="address"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField required id="state" name="state" label="state"
-                        fullWidth autoComplete="state"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField required id="city" name="city" label="city"
-                          fullWidth autoComplete="city"
-                        />
-                      </Grid>
-                  </Grid>
-                  </CardContent>
-                  <CardActions className={classes.nextDetail}>
-                       <Button color="primary" variant="contained" onClick={this.loginUser}>Next</Button>
-                  </CardActions>
-                </Card>
-            </Fragment>
-         )
-    }
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+});
+
+let id = 0;
+function createData(name, calories, fat, carbs, protein) {
+  id += 1;
+  return { id, name, calories, fat, carbs, protein };
 }
 
-Skills.propTypes = {
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
+
+class CheckAttendance extends Component{
+      constructor(){
+          super();
+      }
+      componentDidMount(){
+        this.props.listStudent(()=>{
+           console.log("list students");
+           console.log(this.props.students_list);
+        });
+      }
+      render(){
+          const { classes } = this.props;
+          return (
+            <Paper className={classes.root}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Roll No</TableCell>
+                    <TableCell align="right">Name</TableCell>
+                    <TableCell align="right">Attendance</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.props.students_list.map(row => {
+                    return (
+                      <TableRow key={row._id}>
+                        <TableCell component="th" scope="row">
+                          {row.roll_no}
+                        </TableCell>
+                        <TableCell align="right">{row.name}</TableCell>
+                        <TableCell align="right">{row.branch}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Paper>
+          );
+      }
+}
+
+CheckAttendance.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Skills);
+export default connect((state)=>state, actions)(withStyles(styles)(CheckAttendance));

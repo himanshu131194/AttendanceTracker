@@ -229,19 +229,21 @@ class EnhancedTable extends React.Component {
       order = 'asc';
     }
     this.setState({ order, orderBy });
-  };
+  }
 
-  handleSelectAllClick = event => {
+  handleSelectAllClick = async (event) => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n._id) }));
+      await this.setState(state => ({ selected: state.data.map(n =>{ console.log(n._id); return n._id}) }));
+      this.updateAttendanceInBulk();
       return;
     }
-    this.setState({ selected: [] });
+    //this.setState({ selected: [] });
   };
-
+  updateAttendanceInBulk = (event)=>{
+     console.log(this.state.selected);
+  };
   handleClick = (event, id) => {
     const { selected } = this.state;
-    console.log(selected);
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
@@ -257,11 +259,9 @@ class EnhancedTable extends React.Component {
       );
     }
     this.setState({ selected: newSelected });
-    console.log(this.props);
-    this.props.takeAttendance(selected, ()=>{
+    this.props.takeAttendance(id, ()=>{
         console.log("attendance added");
-    })
-    //console.log(this.state);
+    });
   };
 
   handleChangePage = (event, page) => {

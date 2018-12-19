@@ -14,4 +14,5 @@ const AttendanceSchema = new mongoose.Schema({
         ref: 'students'
       }
 });
+
 export default mongoose.model('attendance', AttendanceSchema);

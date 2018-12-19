@@ -2,11 +2,11 @@
 import {ADD_STUDENT, LIST_STUDENT, TAKE_ATTENDANCE} from './types';
 import axios from 'axios'
 
-export const addStudent = ({email, phone, branch}, callback)=>{
+export const addStudent = ({name, email, phone, branch}, callback)=>{
        return async (dispatch)=>{
              try {
                 const request = await axios.post('http://localhost:4000/api/add-student',{
-                      email, phone, branch
+                      name, email, phone, branch
                 })
                 dispatch({
                       type: ADD_STUDENT,
@@ -42,9 +42,12 @@ export const listStudent = (callback)=>{
        }
 }
 
-export const takeAttendance = ({ids}, callback)=>{
+export const takeAttendance = (ids, callback)=>{
        const presenceList = [];
-       ids.map((id)=> presenceList.push({students_id: id, presence: true}));
+       if(typeof ids == "object")
+          ids.map((id)=> presenceList.push({students_id: id, presence: true}));
+       else
+          presenceList.push({students_id: ids, presence: true});
        return async (dispatch)=>{
              try {
                 const request = await axios.post('http://localhost:4000/api/take-attendance', {
