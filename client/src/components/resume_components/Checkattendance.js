@@ -6,7 +6,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 
 import {connect} from 'react-redux'
 import * as actions  from '../../actions'
@@ -20,21 +28,23 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
-});
-
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+   padding: theme.spacing.unit * 2,
+   textAlign: 'center',
+   color: theme.palette.text.secondary,
+ },
+ textField: {
+  marginLeft: theme.spacing.unit,
+  marginRight: theme.spacing.unit,
+  width: 200,
+},
+searchFilter:{
+  marginBottom: theme.spacing.unit
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+});
 
 class CheckAttendance extends Component{
       constructor(){
@@ -49,30 +59,68 @@ class CheckAttendance extends Component{
       render(){
           const { classes } = this.props;
           return (
-            <Paper className={classes.root}>
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Roll No</TableCell>
-                    <TableCell align="right">Name</TableCell>
-                    <TableCell align="right">Attendance</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {this.props.students_list.map(row => {
-                    return (
-                      <TableRow key={row._id}>
-                        <TableCell component="th" scope="row">
-                          {row.roll_no}
-                        </TableCell>
-                        <TableCell align="right">{row.name}</TableCell>
-                        <TableCell align="right">{row.branch}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </Paper>
+             <Fragment>
+                   <Card className={classes.searchFilter}>
+                     <CardContent>
+                     <Typography variant="h6" gutterBottom>
+                        Check Attendance
+                     </Typography>
+                     <Grid container spacing={24}>
+                       <Grid item xs>
+                         <TextField
+                            id="date"
+                            label="From"
+                            type="date"
+                            defaultValue="2017-05-24"
+                            className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                       </Grid>
+                       <Grid item xs>
+                         <TextField
+                            id="date"
+                            label="To"
+                            type="date"
+                            defaultValue="2017-05-24"
+                            className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                       </Grid>
+                       <Grid item xs>
+                             <Button color="primary" variant="contained" onClick={this.addNewStudent} className={classes.submit}>Submit</Button>
+                       </Grid>
+                     </Grid>
+                     </CardContent>
+                   </Card>
+               <Paper className={classes.root}>
+                 <Table className={classes.table}>
+                   <TableHead>
+                     <TableRow>
+                       <TableCell>Roll No</TableCell>
+                       <TableCell align="right">Name</TableCell>
+                       <TableCell align="right">Attendance</TableCell>
+                     </TableRow>
+                   </TableHead>
+                   <TableBody>
+                     {this.props.students_list.map(row => {
+                       return (
+                         <TableRow key={row._id}>
+                           <TableCell component="th" scope="row">
+                             {row.roll_no}
+                           </TableCell>
+                           <TableCell align="right">{row.name}</TableCell>
+                           <TableCell align="right">{row.branch}</TableCell>
+                         </TableRow>
+                       );
+                     })}
+                   </TableBody>
+                 </Table>
+               </Paper>
+             </Fragment>
           );
       }
 }

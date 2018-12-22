@@ -57,6 +57,7 @@
     "lodash": "4.17.10",
     "material-ui": "1.0.0-beta.43",
     "material-ui-icons": "1.0.0-beta.36",
+    "material-ui-next-pickers": "0.0.16",
     "mongoose": "5.0.16",
     "nodemailer": "^4.7.0",
     "passport": "^0.4.0",
